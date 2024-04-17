@@ -16,6 +16,7 @@ public class PokemonApp {
 
         System.out.println("Welcome to my pokemon project!");
         System.out.println(pokemonDao.getPokemonById(56));
+        System.out.println(typeDao.getTypeByPokemonId(56));
 
 
 
