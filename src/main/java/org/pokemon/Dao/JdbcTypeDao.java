@@ -9,6 +9,7 @@ import org.pokemon.Exception.DaoException;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class JdbcTypeDao implements TypeDao{
@@ -38,7 +39,7 @@ public class JdbcTypeDao implements TypeDao{
 
     public Type getTypeByName(String name, boolean useWildCard) {
         Type type = null;
-        String sql = TYPE_SELECT + "WHERE type_name = ?;";
+        String sql = TYPE_SELECT + "WHERE type_name ILIKE ?;";
         if (useWildCard){
             name = "%" + name + "%";
         }
@@ -56,7 +57,7 @@ public class JdbcTypeDao implements TypeDao{
 
     @Override
     public List<Type> getTypeByPokemonId(int id) {
-        List <Type> type = null;
+        List <Type> type = new ArrayList<>();
         String sql = TYPE_SELECT + "JOIN pokemon_type AS pt ON type.type_id = pt.type_id " +
                 "WHERE pokemon_id = ?;";
         try{
@@ -72,9 +73,9 @@ public class JdbcTypeDao implements TypeDao{
 
     @Override
     public List<Type> getTypeByPokemonName(String name, boolean useWildCard) {
-        List <Type> type = null;
+        List <Type> type = new ArrayList<>();
         String sql = TYPE_SELECT + "JOIN pokemon_type AS pt ON type.type_id = pt.type_id " +
-                "JOIN pokemon AS p ON pt.pokemon_id = p.pokemon_id " + "WHERE p.name = ?;";
+                "JOIN pokemon AS p ON pt.pokemon_id = p.pokemon_id " + "WHERE p.name ILIKE ?;";
         if (useWildCard){
             name = "%" + name + "%";
         }

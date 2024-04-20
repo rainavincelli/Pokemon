@@ -18,7 +18,7 @@ public interface PokemonDao {
 
     List<Pokemon> getPokemonByRegionId(int id);
 
-    List<Pokemon> getPokemon();
+    List<Pokemon> getAllPokemon();
 }
 
 

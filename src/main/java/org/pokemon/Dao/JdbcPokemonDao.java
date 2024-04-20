@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.pokemon.Exception.DaoException;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcPokemonDao implements PokemonDao{
@@ -44,7 +45,7 @@ public class JdbcPokemonDao implements PokemonDao{
     @Override
     public Pokemon getPokemonByName(String name, boolean useWildCard) {
         Pokemon pokemon = null;
-        String sql = POKEMON_SELECT + "WHERE pokemon.name = ?";
+        String sql = POKEMON_SELECT + "WHERE pokemon.name ILIKE ?";
         if (useWildCard){
             name = "%" + name + "%";
         }
@@ -62,9 +63,9 @@ public class JdbcPokemonDao implements PokemonDao{
 
     @Override
     public List<Pokemon> getPokemonByType(String type, boolean useWildCard) {
-        List<Pokemon> pokemonList = null;
+        List<Pokemon> pokemonList = new ArrayList<>();
         String sql = POKEMON_SELECT + "JOIN pokemon_type AS pt ON pokemon.pokemon_id = pt.pokemon_id " +
-                "JOIN type ON pt.type_id = type.type_id WHERE type_name = ?";
+                "JOIN type ON pt.type_id = type.type_id WHERE type_name ILIKE ?";
         if (useWildCard){
             type = "%" + type + "%";
         }
@@ -81,7 +82,7 @@ public class JdbcPokemonDao implements PokemonDao{
 
     @Override
     public List<Pokemon> getPokemonByTypeId(int id) {
-        List<Pokemon> pokemonList = null;
+        List<Pokemon> pokemonList = new ArrayList<>();
         String sql = POKEMON_SELECT + "JOIN pokemon_type AS pt ON pokemon.pokemon_id = pt.pokemon_id " +
                 "WHERE pt.type_id = ?";
 
@@ -99,9 +100,9 @@ public class JdbcPokemonDao implements PokemonDao{
 
     @Override
     public List<Pokemon> getPokemonByRegion(String region, boolean useWildCard) {
-        List<Pokemon> pokemonList = null;
+        List<Pokemon> pokemonList = new ArrayList<>();
         String sql = POKEMON_SELECT + "JOIN region AS r ON pokemon.region_id = r.region_id " +
-                "WHERE region_name = ?";
+                "WHERE region_name ILIKE ?";
         if (useWildCard){
             region = "%" + region + "%";
         }
@@ -118,9 +119,9 @@ public class JdbcPokemonDao implements PokemonDao{
 
     @Override
     public List<Pokemon> getPokemonByRegionId(int id) {
-        List<Pokemon> pokemonList = null;
+        List<Pokemon> pokemonList = new ArrayList<>();
         String sql = POKEMON_SELECT + "JOIN region AS r ON pokemon.region_id = r.region_id " +
-                "WHERE region_id = ?";
+                "WHERE pokemon.region_id = ?";
 
         try{
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
@@ -135,8 +136,8 @@ public class JdbcPokemonDao implements PokemonDao{
     }
 
     @Override
-    public List<Pokemon> getPokemon() {
-        List<Pokemon> pokemonList = null;
+    public List<Pokemon> getAllPokemon() {
+        List<Pokemon> pokemonList = new ArrayList<>();
         String sql = POKEMON_SELECT;
 
         try {
